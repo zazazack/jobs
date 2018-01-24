@@ -3,3 +3,5 @@ data/
 .venv/
 LICENSE*
 README*
+*.pyc
+__pycache__/
