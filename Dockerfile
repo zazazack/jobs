@@ -5,4 +5,4 @@ COPY    requirements.txt .
 RUN     pip install --no-cache-dir -r requirements.txt
 COPY    ./app .
 
-CMD     scrapy crawl linkedin
+CMD     scrapy crawl indeed
