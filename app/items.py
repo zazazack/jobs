@@ -8,19 +8,19 @@
 import re
 from datetime import datetime as dt
 
-import dateparser
+# import dateparser
 import scrapy
 from scrapy.loader import ItemLoader
 from scrapy.loader.processors import MapCompose, TakeFirst
 
 
-def parse_age(age):
-    """Parse a natural language string denoting age, e.g. '1+ day ago'."""
-    age_string = re.sub('\+', '', str(age))
-    # if the post is over 30 days old, it is denoted as '30+ days old'
-    # strip the '+' sign
-    parsed_age = dateparser.parse(age_string)
-    return dt.isoformat(parsed_age)
+# def parse_age(age):
+#     """Parse a natural language string denoting age, e.g. '1+ day ago'."""
+#     age_string = re.sub('\+', '', str(age))
+#     # if the post is over 30 days old, it is denoted as '30+ days old'
+#     # strip the '+' sign
+#     parsed_age = dateparser.parse(age_string)
+#     return dt.isoformat(parsed_age)
 
 
 class JobLoader(ItemLoader):
@@ -30,8 +30,9 @@ class JobLoader(ItemLoader):
 
 class Job(scrapy.Item):
     company = scrapy.Field()
-    jobtitle = scrapy.Field()
+    # date = scrapy.Field(input_processor=MapCompose(parse_age))
+    date = scrapy.Field()
     href = scrapy.Field()
-    summary = scrapy.Field()
-    date = scrapy.Field(input_processor=MapCompose(parse_age))
+    jobtitle = scrapy.Field()
     sponsored = scrapy.Field()
+    summary = scrapy.Field()

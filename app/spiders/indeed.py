@@ -12,9 +12,8 @@ class IndeedSpider(CrawlSpider):
     allowed_domains = ['indeed.com']
     start_urls = ['http://indeed.com/jobs?l=houston']
     rules = (
-        Rule(LinkExtractor(restrict_css='div.pagination > a'),
-             callback='parse_item',
-             follow=True),
+            Rule(LinkExtractor(restrict_css='div.pagination'), follow=True),
+            Rule(LinkExtractor(restrict_css='div.result', unique=True), callback='parse_item'),
     )
 
     def parse_item(self, response):

@@ -1,7 +1,0 @@
-data/
-.env
-.venv/
-LICENSE*
-README*
-*.pyc
-__pycache__/
