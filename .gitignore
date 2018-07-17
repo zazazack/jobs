@@ -103,3 +103,4 @@ ENV/
 # project specific
 data/
 .env
+configs/scrapy/scrapy.cfg

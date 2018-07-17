@@ -1,2 +1,6 @@
 scrapy
+scrapyd-client
+scrapy-fake-useragent
+scrapy-splash
 dateparser
+address
