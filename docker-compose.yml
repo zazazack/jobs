@@ -1,0 +1,11 @@
+version: "3.6"
+
+services:
+  app:
+    image: zwilson/jobs
+    build: .
+    env_file: scrapy.env
+    volumes:
+      - ./scrapy.cfg:/usr/src/scrapy.cfg
+      - ./app:/usr/src/app
+    command: scrapyd-deploy

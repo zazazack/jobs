@@ -80,7 +80,7 @@ celerybeat-schedule
 *.sage.py
 
 # dotenv
-.env
+# .env
 
 # virtualenv
 .venv
@@ -99,8 +99,3 @@ ENV/
 
 # mypy
 .mypy_cache/
-
-# project specific
-data/
-.env
-configs/scrapy/scrapy.cfg

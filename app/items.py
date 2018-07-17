@@ -14,13 +14,16 @@ from scrapy.loader import ItemLoader
 from scrapy.loader.processors import MapCompose, TakeFirst
 
 
-# def parse_age(age):
-#     """Parse a natural language string denoting age, e.g. '1+ day ago'."""
-#     age_string = re.sub('\+', '', str(age))
-#     # if the post is over 30 days old, it is denoted as '30+ days old'
-#     # strip the '+' sign
-#     parsed_age = dateparser.parse(age_string)
-#     return dt.isoformat(parsed_age)
+def build_job_post_url_with_jobkey(jobkey):
+    return f'https://www.indeed.com/viewjob?jk={jobkey}'
+
+
+def is_sponsored(s):
+    s = s.lower().strip()
+    if 'sponsored' in s:
+        return True
+    else:
+        return False
 
 
 class JobLoader(ItemLoader):
@@ -30,9 +33,17 @@ class JobLoader(ItemLoader):
 
 class Job(scrapy.Item):
     company = scrapy.Field()
-    # date = scrapy.Field(input_processor=MapCompose(parse_age))
-    date = scrapy.Field()
-    href = scrapy.Field()
+    id = scrapy.Field()
+    job_type = scrapy.Field() # full-time, part-time, etc.
     jobtitle = scrapy.Field()
-    sponsored = scrapy.Field()
+    location = scrapy.Field()
+    post_age = scrapy.Field()
+    post_url = scrapy.Field(input_processor=MapCompose(build_job_post_url_with_jobkey))
+    sponsored = scrapy.Field(input_processor=MapCompose(is_sponsored))
     summary = scrapy.Field()
+
+class Page(scrapy.Item):
+    id = scrapy.Field()
+    page_text = scrapy.Field()
+    page_title = scrapy.Field()
+    url = scrapy.Field()
