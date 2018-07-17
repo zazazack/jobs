@@ -1,11 +1,11 @@
-version: '3'
+version: "3.6"
 
 services:
   app:
-    image: zwilson/job
+    image: zwilson/jobs
     build: .
-    ports:
-      - 80:80
+    env_file: scrapy.env
     volumes:
+      - ./scrapy.cfg:/usr/src/scrapy.cfg
       - ./app:/usr/src/app
-    command: scrapy crawl linkein
+    command: scrapyd-deploy
