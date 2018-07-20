@@ -4,3 +4,4 @@ scrapy-fake-useragent
 scrapy-splash
 dateparser
 address
+scrapy-deltafetch
