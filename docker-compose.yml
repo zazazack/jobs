@@ -6,8 +6,10 @@ services:
     build: .
     volumes:
       - ./app:/usr/src/app
-      - ./eggs:/usr/src
       - ./configs/scrapy/scrapy.cfg:/usr/src/scrapy.cfg
+      - items:/usr/src/items
+      - cache:/usr/src/.scrapy
+      - src:/usr/src
     depends_on:
       - scrapyd
     command: scrapyd-deploy
@@ -18,6 +20,22 @@ services:
     volumes:
       - items:/usr/src/items
       - ./configs/scrapyd/scrapyd.conf:/etc/scrapyd/scrapyd.conf
+  splash:
+    image: scrapinghub/splash
+    ports:
+      - 8050:8050
+  filebrowser:
+    image: hacdias/filemanager
+    ports:
+      - 8000:80
+    volumes:
+      - src:/srv
+  spiderkeeper:
+    image: zwilson/docker-spiderkeeper
+    ports:
+      - 5000:5000
 
 volumes:
   items:
+  cache:
+  src:

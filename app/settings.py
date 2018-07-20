@@ -46,15 +46,19 @@ CONCURRENT_REQUESTS_PER_DOMAIN = 16
 
 # Enable or disable spider middlewares
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
-#SPIDER_MIDDLEWARES = {
-#    'app.middlewares.AppSpiderMiddleware': 543,
-#}
+SPIDER_MIDDLEWARES = {
+    'scrapy_deltafetch.DeltaFetch': 100,
+    'scrapy_splash.SplashDeduplicateArgsMiddleware': 100,
+}
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
     'scrapy_fake_useragent.middleware.RandomUserAgentMiddleware': 400,
+    'scrapy_splash.SplashCookiesMiddleware': 723,
+    'scrapy_splash.SplashMiddleware': 725,
+    'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 810,
 }
 
 # Enable or disable extensions
@@ -88,7 +92,9 @@ HTTPCACHE_ENABLED = True
 HTTPCACHE_EXPIRATION_SECS = 0
 HTTPCACHE_DIR = 'httpcache'
 HTTPCACHE_IGNORE_HTTP_CODES = []
-HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
-
+HTTPCACHE_STORAGE = 'scrapy_splash.SplashAwareFSCacheStorage'
+# DELTAFETCH_ENABLED = True
+DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
+SPLASH_URL = 'http://192.168.59.103:8050'
 FEED_URI = "file:///usr/src/items/jobs/%(name)s/%(time)s.csv"
 FEED_FORMAT='csv'
