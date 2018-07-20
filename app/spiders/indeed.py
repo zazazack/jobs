@@ -5,8 +5,21 @@ import scrapy
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 
-from app.items import Job, JobLoader
-from w3lib.html import remove_tags
+from app.items import Job, Page, JobLoader
+
+#
+# def parse_company(response):
+#     for e in response.css('div.result'):
+#         for i in e.css('.company *::text').extract():
+#             if re.match('\w+', i.strip()):
+#                 yield i.strip()
+#
+#
+# def parse_jobtitle(response):
+#     for e in response.css('div.result'):
+#         for i in e.css('.jobtitle *::text').extract():
+#             if re.match('\w+', i.strip()):
+#                 yield i.strip()
 
 
 class IndeedSpider(CrawlSpider):
@@ -24,10 +37,15 @@ class IndeedSpider(CrawlSpider):
         loader.add_css('post_url', 'div.result::attr(data-jk)')
         loader.add_css('id', 'div.result::attr(id)')
         result_loader = loader.nested_css('div.result')
-        result_loader.add_css('company', '.company')
+        result_loader.add_css('company', '.company *::text')
         result_loader.add_css('post_age', 'span.date::text')
-        result_loader.add_css('post_dt', 'span.date::text')
-        result_loader.add_css('job_title', '.jobtitle')
+        result_loader.add_css('jobtitle', '.jobtitle *::text')
         result_loader.add_css('location', '.location *::text')
-        result_loader.add_css('job_summary', '.summary')
+        result_loader.add_css('sponsored', 'span.sponsoredGray::text')
+        result_loader.add_css('summary', 'span.summary::text')
+        return loader.load_item()
+
+    def parse_page(self, response):
+        loader = JobLoader(item=Page(), response=response)
+        loader.add_css('page_title', 'title::text')
         return loader.load_item()
