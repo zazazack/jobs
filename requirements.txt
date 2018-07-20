@@ -1,7 +1,7 @@
+dateparser
 scrapy
-scrapyd-client
+scrapy-deltafetch
 scrapy-fake-useragent
 scrapy-splash
-dateparser
-address
-scrapy-deltafetch
+scrapyd-client
+usaddress
