@@ -24,6 +24,6 @@ class GlassdoorSpider(CrawlSpider):
         result_loader.add_css('location', '.loc::text')
         result_loader.add_css('organic', '::attr(data-is-organic-job)')
         result_loader.add_css('post_age', 'span.minor::text')
-        result_loader.add_css('post_url', 'a::attr(href)')
+        result_loader.add_value('post_url', response.urljoin(response.css('a::attr(href)').extract_first())
         loader.add_css('post_content', 'div.jobDescriptionContent')
         return loader.load_item()
