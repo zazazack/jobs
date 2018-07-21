@@ -6,8 +6,8 @@ services:
     build: .
     volumes:
       - ./app:/usr/src/app
-      - ./eggs:/usr/src
       - ./configs/scrapy/scrapy.cfg:/usr/src/scrapy.cfg
+      - ./items:/usr/src/items
     depends_on:
       - scrapyd
     command: scrapyd-deploy
@@ -16,8 +16,9 @@ services:
     ports:
       - 6800:6800
     volumes:
-      - items:/usr/src/items
+      - ./items:/usr/src/items
       - ./configs/scrapyd/scrapyd.conf:/etc/scrapyd/scrapyd.conf
-
-volumes:
-  items:
+  splash:
+    image: scrapinghub/splash
+    ports:
+      - 8050:8050
