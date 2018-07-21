@@ -106,3 +106,5 @@ data/
 configs/scrapy/scrapy.cfg
 
 deploy/
+
+items/
