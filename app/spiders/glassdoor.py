@@ -11,7 +11,7 @@ class GlassdoorSpider(CrawlSpider):
     allowed_domains = ['glassdoor.com']
     start_urls = ['https://www.glassdoor.com']
     rules = (
-        Rule(LinkExtractor(allow=('/Job', 'job-listing')), callback='parse_item', follow=True),
+        Rule(LinkExtractor(allow=('/Job')), callback='parse_item', follow=True),
     )
 
     def parse_item(self, response):
@@ -24,6 +24,4 @@ class GlassdoorSpider(CrawlSpider):
         result_loader.add_css('location', '.loc::text')
         result_loader.add_css('organic', '::attr(data-is-organic-job)')
         result_loader.add_css('post_age', 'span.minor::text')
-        result_loader.add_value('post_url', response.urljoin(response.css('a::attr(href)').extract_first())
-        loader.add_css('post_content', 'div.jobDescriptionContent')
         return loader.load_item()
