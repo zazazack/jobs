@@ -1,6 +1,8 @@
-# job
+# jobs
 
-Work smart not hard. Scrapy spider for searching for jobs. Currently only for Houston, TX.
+Work smart not hard.
+
+Scrapy spider for searching for jobs. ~~Currently only for Houston, TX.~~
 
 ## Installation
 
