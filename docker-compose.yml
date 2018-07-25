@@ -8,14 +8,16 @@ services:
       - ./app:/usr/src/app
       - ./configs/scrapy/scrapy.cfg:/usr/src/scrapy.cfg
       - ./items:/usr/src/items
-      - httpcache:/usr/src/.scrapy
     depends_on:
       - scrapyd
+      - splash
     command: scrapyd-deploy
   scrapyd:
     image: zwilson/docker-scrapyd
     ports:
       - 6800:6800
+    depends_on:
+      - splash
     volumes:
       - ./items:/usr/src/items
       - ./configs/scrapyd/scrapyd.conf:/etc/scrapyd/scrapyd.conf
@@ -23,5 +25,3 @@ services:
     image: scrapinghub/splash
     ports:
       - 8050:8050
-volumes:
-  httpcache:

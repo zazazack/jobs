@@ -12,10 +12,9 @@ from w3lib.html import remove_tags
 class IndeedSpider(CrawlSpider):
     name = 'indeed'
     allowed_domains = ['indeed.com']
-    start_urls = ['http://indeed.com/jobs?l=houston']
+    start_urls = ['http://indeed.com']
     rules = (
-            Rule(LinkExtractor(restrict_css='div.pagination'), follow=True),
-            Rule(LinkExtractor(restrict_css='div.result', unique=True), callback='parse_item'),
+            Rule(LinkExtractor(allow=('/jobs')), callback='parse_item', follow=True),
     )
 
     def parse_item(self, response):
