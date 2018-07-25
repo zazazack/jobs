@@ -1,7 +1,8 @@
-scrapy
-scrapyd-client
-scrapy-fake-useragent
-scrapy-splash
+usaddress
 dateparser
-address
+scrapy
 scrapy-deltafetch
+scrapy-fake-useragent
+scrapy-magicfields
+scrapy-splash
+scrapyd-client

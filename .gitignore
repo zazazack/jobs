@@ -105,4 +105,4 @@ data/
 .env
 configs/scrapy/scrapy.cfg
 
-deploy/
+items/**
