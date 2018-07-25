@@ -41,6 +41,8 @@ class Job(scrapy.Item):
     job_title = scrapy.Field()
     job_type = scrapy.Field()  # full-time, part-time, etc.
     location = scrapy.Field()
+    normalized_job_title = scrapy.Field()
+    organic = scrapy.Field()
     post_age = scrapy.Field()
     post_dt = scrapy.Field()
     post_url = scrapy.Field()
