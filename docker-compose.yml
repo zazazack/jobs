@@ -4,8 +4,24 @@ services:
   app:
     image: zwilson/jobs
     build: .
-    env_file: scrapy.env
     volumes:
-      - ./scrapy.cfg:/usr/src/scrapy.cfg
       - ./app:/usr/src/app
+      - ./configs/scrapy/scrapy.cfg:/usr/src/scrapy.cfg
+      - ./items:/usr/src/items
+    depends_on:
+      - scrapyd
+      - splash
     command: scrapyd-deploy
+  scrapyd:
+    image: zwilson/docker-scrapyd
+    ports:
+      - 6800:6800
+    depends_on:
+      - splash
+    volumes:
+      - ./items:/usr/src/items
+      - ./configs/scrapyd/scrapyd.conf:/etc/scrapyd/scrapyd.conf
+  splash:
+    image: scrapinghub/splash
+    ports:
+      - 8050:8050

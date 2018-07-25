@@ -104,3 +104,5 @@ ENV/
 data/
 .env
 configs/scrapy/scrapy.cfg
+
+items/**
