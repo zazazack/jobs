@@ -4,7 +4,7 @@ from urllib.parse import urljoin
 import scrapy
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
-
+from scrapy.loader.processors import Join
 from app.items import Job, JobLoader
 from w3lib.html import remove_tags
 
@@ -23,10 +23,10 @@ class IndeedSpider(CrawlSpider):
         loader.add_css('post_url', 'div.result::attr(data-jk)')
         loader.add_css('id', 'div.result::attr(id)')
         result_loader = loader.nested_css('div.result')
-        result_loader.add_css('company', '.company')
+        result_loader.add_css('company', '.company::text')
         result_loader.add_css('post_age', 'span.date::text')
         result_loader.add_css('post_dt', 'span.date::text')
-        result_loader.add_css('job_title', '.jobtitle')
+        result_loader.add_css('job_title', '.jobtitle::text')
         result_loader.add_css('location', '.location *::text')
-        result_loader.add_css('job_summary', '.summary')
+        result_loader.add_xpath('job_summary', "normalize-space(//span[@class='summary']/text())", output_processor=Join())
         return loader.load_item()
