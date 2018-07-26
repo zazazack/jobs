@@ -10,11 +10,14 @@ services:
       - ./items:/usr/src/items
     depends_on:
       - scrapyd
+      - splash
     command: scrapyd-deploy
   scrapyd:
     image: zwilson/docker-scrapyd
     ports:
       - 6800:6800
+    depends_on:
+      - splash
     volumes:
       - ./items:/usr/src/items
       - ./configs/scrapyd/scrapyd.conf:/etc/scrapyd/scrapyd.conf

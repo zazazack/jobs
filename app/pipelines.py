@@ -17,12 +17,12 @@ def post_age_to_datetime(post_age: str) -> str:
 class AppPipeline(object):
     def process_item(self, item, spider):
         if item.get('location') is not None:
-            addr = item.get('location')
-            parsed_addr = usaddress.tag(addr)[0]
-            item['zip_code'] = parsed_addr.get('ZipCode')
-            item['city'] = parsed_addr.get('PlaceName')
-            item['state'] = parsed_addr.get('StateName')
+            addr = item['location']
+            result = usaddress.tag(addr)
+            if 'Ambiguous' not in result:
+                item['zip_code'] = parsed_addr.get('ZipCode')
+                item['city'] = parsed_addr.get('PlaceName')
+                item['state'] = parsed_addr.get('StateName')
         if item.get('post_age') is not None:
-            age = item.get('post_age')
-            item['post_dt'] = post_age_to_datetime(age)
+            item['post_dt'] = post_age_to_datetime(item.get('post_age'))
         return item
