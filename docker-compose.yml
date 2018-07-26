@@ -8,9 +8,6 @@ services:
       - ./app:/usr/src/app
       - ./configs/scrapy/scrapy.cfg:/usr/src/scrapy.cfg
       - ./items:/usr/src/items
-    depends_on:
-      - scrapyd
-      - splash
     command: scrapyd-deploy
   scrapyd:
     image: zwilson/docker-scrapyd
