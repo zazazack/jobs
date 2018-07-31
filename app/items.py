@@ -10,7 +10,7 @@ from datetime import datetime as dt
 
 import scrapy
 from scrapy.loader import ItemLoader
-from scrapy.loader.processors import MapCompose, TakeFirst
+from scrapy.loader.processors import MapCompose, TakeFirst, Identity
 from w3lib.html import remove_tags
 
 def get_digits(text):
@@ -30,7 +30,7 @@ class Job(scrapy.Item):
     city = scrapy.Field()
     company = scrapy.Field()
     company_score = scrapy.Field()
-    id = scrapy.Field(input_processor=MapCompose(remove_tags, get_digits))
+    id = scrapy.Field(input_processor=Identity())
     job_category = scrapy.Field()
     job_description = scrapy.Field()
     job_experience = scrapy.Field()
