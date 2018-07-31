@@ -18,11 +18,13 @@ class AppPipeline(object):
     def process_item(self, item, spider):
         if item.get('location') is not None:
             addr = item['location']
-            result = usaddress.tag(addr)
-            if 'Ambiguous' not in result:
-                item['zip_code'] = parsed_addr.get('ZipCode')
-                item['city'] = parsed_addr.get('PlaceName')
-                item['state'] = parsed_addr.get('StateName')
+            result, result_type = usaddress.tag(addr)
+            if result is not None:
+                item['zip_code'] = result.get('ZipCode')
+                item['city'] = result.get('PlaceName')
+                item['state'] = result.get('StateName')
+
         if item.get('post_age') is not None:
             item['post_dt'] = post_age_to_datetime(item.get('post_age'))
+
         return item
