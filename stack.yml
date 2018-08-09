@@ -1,23 +1,18 @@
 version: "3.6"
 
 services:
-  app:
-    image: zwilson/jobs
-    build: .
-    volumes:
-      - ./app:/usr/src/app
-      - ./configs/scrapy/scrapy.cfg:/usr/src/scrapy.cfg
-      - ./items:/usr/src/items
-    command: scrapyd-deploy
   scrapyd:
     image: zwilson/docker-scrapyd
     ports:
       - 6800:6800
     depends_on:
       - splash
+      - elasticsearch
     volumes:
-      - ./items:/usr/src/items
-      - ./configs/scrapyd/scrapyd.conf:/etc/scrapyd/scrapyd.conf
+      - items:/usr/src/items
+    configs:
+      - source: scrapyd.conf
+        target: /etc/scrapyd/scrapyd.conf
   splash:
     image: scrapinghub/splash
     ports:
@@ -41,3 +36,8 @@ services:
 
 volumes:
   elasticsearch_data:
+  items:
+
+configs:
+  scrapyd.conf:
+    file: ./configs/scrapyd/scrapyd.conf

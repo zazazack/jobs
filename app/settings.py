@@ -68,6 +68,7 @@ DOWNLOADER_MIDDLEWARES = {
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    'app.pipelines.AppPipeline': 300,
+   'scrapyelasticsearch.scrapyelasticsearch.ElasticSearchPipeline': 500
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -91,11 +92,20 @@ HTTPCACHE_DIR = 'httpcache'
 HTTPCACHE_IGNORE_HTTP_CODES = []
 HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 DELTAFETCH_ENABLED = True
-FEED_URI = "file:///usr/src/items/jobs/%(name)s/%(time)s.csv"
-FEED_FORMAT='csv'
+# FEED_URI = "file:///usr/src/items/jobs/%(name)s/%(time)s.csv"
+# FEED_FORMAT='csv'
 
-# MAGIC_FIELDS = {
-#     "timestamp": "$time",
-#     "spider": "$spider:name",
-#     "response_url": "$response:url",
-# }
+MAGIC_FIELDS = {
+    "timestamp": "$time",
+    "response_url": "$response:url",
+    "spider": "$spider:name",
+}
+
+ELASTICSEARCH_SERVERS = ['http://elasticsearch:9200']
+ELASTICSEARCH_INDEX = 'jobs'
+ELASTICSEARCH_INDEX_DATE_FORMAT = '%Y-%m'
+ELASTICSEARCH_TYPE = 'items'
+ELASTICSEARCH_UNIQ_KEY = 'id'  # Custom unique key
+
+# can also accept a list of fields if need a composite key
+# ELASTICSEARCH_UNIQ_KEY = ['url', 'id']

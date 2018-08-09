@@ -6,3 +6,4 @@ scrapy-fake-useragent
 scrapy-magicfields
 scrapy-splash
 scrapyd-client
+ScrapyElasticSearch

@@ -23,7 +23,7 @@ def normalize_text(s):
 
 class JobLoader(ItemLoader):
     default_output_processor = TakeFirst()
-    default_input_processor = MapCompose(normalize_text)
+    default_input_processor = MapCompose(str.strip)
 
 
 class Job(scrapy.Item):
@@ -50,5 +50,6 @@ class Job(scrapy.Item):
     salary_estimate = scrapy.Field()
     spider = scrapy.Field()
     state = scrapy.Field()
-    timestamp = scrapy.Field()
+    timestamp = scrapy.Field(input_processor=Identity())
     zip_code = scrapy.Field()
+    url = scrapy.Field()
