@@ -5,16 +5,21 @@
 # See documentation in:
 # https://doc.scrapy.org/en/latest/topics/items.html
 
-import re
 from datetime import datetime as dt
+import json
+from pathlib import Path
+import re
 
 import scrapy
 from scrapy.loader import ItemLoader
 from scrapy.loader.processors import MapCompose, TakeFirst, Identity
 from w3lib.html import remove_tags
+from scrapy_jsonschema.item import JsonSchemaItem
+
 
 def get_digits(text):
     return "".join(s for s in text if s.isdigit())
+
 
 def normalize_text(s):
     if isinstance(s, str):
@@ -31,6 +36,7 @@ class Job(scrapy.Item):
     company = scrapy.Field()
     company_score = scrapy.Field()
     id = scrapy.Field(input_processor=Identity())
+    description = scrapy.Field()
     job_category = scrapy.Field()
     job_description = scrapy.Field()
     job_experience = scrapy.Field()
@@ -51,5 +57,11 @@ class Job(scrapy.Item):
     spider = scrapy.Field()
     state = scrapy.Field()
     timestamp = scrapy.Field(input_processor=Identity())
-    zip_code = scrapy.Field()
     url = scrapy.Field()
+    screenshot = scrapy.Field()
+    image_url = scrapy.Field()
+    images = scrapy.Field()
+    files = scrapy.Field()
+    file_urls = scrapy.Field()
+    data = scrapy.Field()
+    zip_code = scrapy.Field()

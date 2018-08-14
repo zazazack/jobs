@@ -1,9 +1,11 @@
-usaddress
 dateparser
-scrapy
+Pillow
+scrapyd
 scrapy-deltafetch
 scrapy-fake-useragent
+scrapy-jsonschema
 scrapy-magicfields
 scrapy-splash
 scrapyd-client
 ScrapyElasticSearch
+usaddress

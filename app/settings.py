@@ -48,14 +48,18 @@ COOKIES_ENABLED = False
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 SPIDER_MIDDLEWARES = {
    'scrapy_magicfields.MagicFieldsMiddleware': 100,
+   'scrapy_splash.SplashDeduplicateArgsMiddleware': 100,
    # 'app.middlewares.AppSpiderMiddleware': 543,
 }
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
     'scrapy_fake_useragent.middleware.RandomUserAgentMiddleware': 400,
+    'scrapy_splash.SplashCookiesMiddleware': 723,
+    'scrapy_splash.SplashMiddleware': 725,
+    'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 810,
+    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
 }
 
 # Enable or disable extensions
@@ -67,8 +71,12 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'app.pipelines.AppPipeline': 300,
-   'scrapyelasticsearch.scrapyelasticsearch.ElasticSearchPipeline': 500
+    'app.pipelines.AppPipeline': 300,
+    # 'app.pipelines.ScreenshotPipeline': 300,
+    # 'scrapy_jsonschema.JsonSchemaValidatePipeline': 100,
+    # 'scrapy.pipelines.files.FilesPipeline': 1,
+    # 'scrapy.pipelines.images.ImagesPipeline': 1,
+    'scrapyelasticsearch.scrapyelasticsearch.ElasticSearchPipeline': 500,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -86,26 +94,33 @@ AUTOTHROTTLE_DEBUG = False
 
 # Enable and configure HTTP caching (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
-HTTPCACHE_ENABLED = True
-HTTPCACHE_EXPIRATION_SECS = 0
-HTTPCACHE_DIR = 'httpcache'
-HTTPCACHE_IGNORE_HTTP_CODES = []
-HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+# HTTPCACHE_ENABLED = True
+# HTTPCACHE_EXPIRATION_SECS = 0
+# HTTPCACHE_DIR = 'httpcache'
+# HTTPCACHE_IGNORE_HTTP_CODES = []
+# # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+# HTTPCACHE_STORAGE = 'scrapy_splash.SplashAwareFSCacheStorage'
+
+SPLASH_URL = 'http://splash:8050'
+DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
+
 DELTAFETCH_ENABLED = True
-# FEED_URI = "file:///usr/src/items/jobs/%(name)s/%(time)s.csv"
-# FEED_FORMAT='csv'
 
 MAGIC_FIELDS = {
     "timestamp": "$time",
-    "response_url": "$response:url",
+    "url": "$response:url",
     "spider": "$spider:name",
 }
 
-ELASTICSEARCH_SERVERS = ['http://elasticsearch:9200']
+ELASTICSEARCH_SERVERS = ['http://elasticsearch']
 ELASTICSEARCH_INDEX = 'jobs'
 ELASTICSEARCH_INDEX_DATE_FORMAT = '%Y-%m'
 ELASTICSEARCH_TYPE = 'items'
-ELASTICSEARCH_UNIQ_KEY = 'id'  # Custom unique key
-
+ELASTICSEARCH_UNIQ_KEY = 'url'  # Custom unique key
 # can also accept a list of fields if need a composite key
 # ELASTICSEARCH_UNIQ_KEY = ['url', 'id']
+
+# FEED_FORMAT = 'jsonlines'
+# FEED_URI = "file:///usr/src/items/jobs/%(name)s/%(time)s.jl"
+# FILES_STORE = '/usr/src/items/files'
+# IMAGES_STORE = '/usr/src/items/images'

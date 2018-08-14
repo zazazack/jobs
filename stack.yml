@@ -1,43 +1,25 @@
 version: "3.6"
-
+networks:
+  backend:
+    attachable: true
 services:
-  scrapyd:
-    image: zwilson/docker-scrapyd
-    ports:
-      - 6800:6800
-    depends_on:
-      - splash
-      - elasticsearch
-    volumes:
-      - items:/usr/src/items
-    configs:
-      - source: scrapyd.conf
-        target: /etc/scrapyd/scrapyd.conf
   splash:
     image: scrapinghub/splash
-    ports:
-      - 8050:8050
+    networks:
+      - backend
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.3.2
-    ports:
-      - 9200:9200
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data
     environment:
       xpack.monitoring.collection.enabled: "true"
-  logstash:
-    image: docker.elastic.co/logstash/logstash:6.3.2
+    networks:
+      - backend
   kibana:
     image: docker.elastic.co/kibana/kibana:6.3.2
     depends_on:
       - elasticsearch
     ports:
       - 5601:5601
-
 volumes:
   elasticsearch_data:
-  items:
-
-configs:
-  scrapyd.conf:
-    file: ./configs/scrapyd/scrapyd.conf

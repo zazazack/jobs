@@ -1,43 +1,30 @@
 version: "3.6"
-
 services:
   app:
     image: zwilson/jobs
     build: .
+    depends_on:
+      - splash
+      - elasticsearch
     volumes:
       - ./app:/usr/src/app
       - ./configs/scrapy/scrapy.cfg:/usr/src/scrapy.cfg
       - ./items:/usr/src/items
-    command: scrapyd-deploy
-  scrapyd:
-    image: zwilson/docker-scrapyd
-    ports:
-      - 6800:6800
-    depends_on:
-      - splash
+      - ./configs/scrapyd/scrapyd.conf
+    command: scrapyd
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.3.2
     volumes:
-      - ./items:/usr/src/items
-      - ./configs/scrapyd/scrapyd.conf:/etc/scrapyd/scrapyd.conf
+      - elasticsearch_data:/usr/share/elasticsearch/data
   splash:
     image: scrapinghub/splash
     ports:
       - 8050:8050
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.3.2
-    ports:
-      - 9200:9200
-    volumes:
-      - elasticsearch_data:/usr/share/elasticsearch/data
-    environment:
-      xpack.monitoring.collection.enabled: "true"
-  logstash:
-    image: docker.elastic.co/logstash/logstash:6.3.2
   kibana:
     image: docker.elastic.co/kibana/kibana:6.3.2
     depends_on:
       - elasticsearch
     ports:
       - 5601:5601
-
 volumes:
   elasticsearch_data:
