@@ -101,8 +101,6 @@ ENV/
 .mypy_cache/
 
 # project specific
-data/
 .env
-
-items/**
+data/**
 logs/**
