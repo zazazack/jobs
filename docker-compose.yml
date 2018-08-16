@@ -1,30 +1,36 @@
-version: "3.6"
 services:
   app:
-    image: zwilson/jobs
-    build: .
+    build:
+      context:   .
+    command:     scrapyd
     depends_on:
-      - splash
       - elasticsearch
+      - splash
+    image:       zwilson/jobs
     volumes:
-      - ./app:/usr/src/app
-      - ./configs/scrapy/scrapy.cfg:/usr/src/scrapy.cfg
-      - ./items:/usr/src/items
-      - ./configs/scrapyd/scrapyd.conf
-    command: scrapyd
+      - ./app:/usr/src/app:rw
+      - ./configs/app/scrapy.cfg:/usr/src/scrapy.cfg:ro
+      - ./configs/app/scrapyd.conf:/usr/src/scrapyd.conf:ro
+      - ./data/app/dbs:/usr/src/dbs:rw
+      - ./data/app/eggs:/usr/src/eggs:rw
+      - ./data/app/items:/usr/src/items:rw
+      - ./logs/app:/usr/src/logs:rw
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.3.2
+    image:       docker.elastic.co/elasticsearch/elasticsearch:6.3.2
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data
-  splash:
-    image: scrapinghub/splash
-    ports:
-      - 8050:8050
   kibana:
-    image: docker.elastic.co/kibana/kibana:6.3.2
     depends_on:
       - elasticsearch
+    image:       docker.elastic.co/kibana/kibana:6.3.2
+  proxy:
+    image: nginx
     ports:
-      - 5601:5601
+      - 5602:80
+    volumes:
+      - ./configs/proxy/default.conf:/etc/nginx/conf.d/default.conf
+  splash:
+    image:       scrapinghub/splash
+version:         '3.6'
 volumes:
-  elasticsearch_data:
+    elasticsearch_data:

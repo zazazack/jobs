@@ -72,11 +72,11 @@ DOWNLOADER_MIDDLEWARES = {
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     'app.pipelines.AppPipeline': 300,
-    # 'app.pipelines.ScreenshotPipeline': 300,
-    # 'scrapy_jsonschema.JsonSchemaValidatePipeline': 100,
-    # 'scrapy.pipelines.files.FilesPipeline': 1,
-    # 'scrapy.pipelines.images.ImagesPipeline': 1,
-    'scrapyelasticsearch.scrapyelasticsearch.ElasticSearchPipeline': 500,
+    # 'app.pipelines.ScreenshotPipeline': 300,  # XXX: this is cool but expensive (space)
+    # 'scrapy_jsonschema.JsonSchemaValidatePipeline': 100, # XXX: too strict
+    # 'scrapy.pipelines.files.FilesPipeline': 1,  # XXX: not currently downloading any files
+    # 'scrapy.pipelines.images.ImagesPipeline': 1, # XXX: turn this on for ScreenshotPipeline
+    'scrapyelasticsearch.scrapyelasticsearch.ElasticSearchPipeline': 500, # XXX: send items to elasticsearch AWESOME!!!
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -92,6 +92,7 @@ AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
 # Enable showing throttling stats for every response received:
 AUTOTHROTTLE_DEBUG = False
 
+# XXX: cache storage takes up too much space
 # Enable and configure HTTP caching (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
 # HTTPCACHE_ENABLED = True
@@ -121,6 +122,6 @@ ELASTICSEARCH_UNIQ_KEY = 'url'  # Custom unique key
 # ELASTICSEARCH_UNIQ_KEY = ['url', 'id']
 
 # FEED_FORMAT = 'jsonlines'
-# FEED_URI = "file:///usr/src/items/jobs/%(name)s/%(time)s.jl"
-# FILES_STORE = '/usr/src/items/files'
-# IMAGES_STORE = '/usr/src/items/images'
+# FEED_URI = "file:///usr/src/data/items/jobs/%(name)s/%(time)s.jl"
+# FILES_STORE = '/usr/src/data/items/files'
+# IMAGES_STORE = '/usr/src/data/items/images'

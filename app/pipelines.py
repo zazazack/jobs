@@ -30,9 +30,10 @@ class AppPipeline(object):
             addr = item['location']
             result, result_type = usaddress.tag(addr)
             if result is not None:
-                item['zip_code'] = result.get('ZipCode')
                 item['city'] = result.get('PlaceName')
                 item['state'] = result.get('StateName')
+                if result.get('ZipCode') is not None:
+                    item['zip_code'] = result.get('ZipCode')
 
         if item.get('post_age') is not None:
             item['post_dt'] = post_age_to_datetime(item.get('post_age'))

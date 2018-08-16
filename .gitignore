@@ -105,7 +105,4 @@ data/
 .env
 
 items/**
-
-scrapy\.cfg
-
-setup\.py
+logs/**

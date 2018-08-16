@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import json
+
 import scrapy
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
@@ -15,13 +17,12 @@ class GlassdoorSpider(CrawlSpider):
     )
 
     def parse_item(self, response):
-        loader = JobLoader(item=Job(), response=response)
-        result_loader = loader.nested_css('li.jl')
-        result_loader.add_css('normalized_job_title', '::attr(data-normalize-job-title)')
-        result_loader.add_css('company', '.empLoc > div::text')
-        result_loader.add_css('id', '::attr(data-id)')
-        result_loader.add_css('job_title', 'a::text')
-        result_loader.add_css('location', '.loc::text')
-        result_loader.add_css('organic', '::attr(data-is-organic-job)')
-        result_loader.add_css('post_age', 'span.minor::text')
-        return loader.load_item()
+        item = Job()
+        for e in response.css('li.jl'):
+            item['company'] = e.css('div.empLoc ::text').re('\s+(.*)\s+–')[0]
+            item['easy_apply'] = e.css('div.easyApply::text').extract_first()
+            item['id'] = e.css('::attr(data-id)').extract_first()
+            item['title'] = e.css('a.jobLink::text').extract_first()
+            item['location'] = e.css('span.loc::text').extract_first()
+            item['post_age'] = e.css('span.minor::text').extract_first()
+        return item

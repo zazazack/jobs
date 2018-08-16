@@ -5,10 +5,8 @@ import logging
 import scrapy
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
-from scrapy.loader.processors import MapCompose, Identity, TakeFirst
-from w3lib.html import remove_tags, strip_html5_whitespace
 
-from app.items import Job, JobLoader
+from app.items import Job
 
 
 class RigzoneSpider(CrawlSpider):
@@ -26,6 +24,14 @@ class RigzoneSpider(CrawlSpider):
             obj = response.css('head > script[type="application/ld+json"]::text').extract_first()
             if obj is not None:
                 item['data'] = json.loads(obj.strip())
-        except (KeyError, TypeError, json.decoder.JSONDecodeError) as e:
+                if item.get('data') is not None:
+                    item['company'] = item.get('data').get('hiringOrganization').get('name')
+                    item['title'] = item['data'].get('title')
+                    item['country'] = item['data'].get('jobLocation').get('address').get('addressCountry')
+                    item['city'] = item['data'].get('jobLocation').get('address').get('addressLocality')
+                    item['state'] = item['data'].get('jobLocation').get('address').get('addressRegion')
+                    item['post_dt'] = item['data'].get('datePosted')
+                    item['description'] = item['data'].get('description')
+        except (AttributeError, KeyError, TypeError, json.decoder.JSONDecodeError) as e:
             logging.warning(e)
         return item
