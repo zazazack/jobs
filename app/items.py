@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
-
 # Define here the models for your scraped items
 #
 # See documentation in:
 # https://doc.scrapy.org/en/latest/topics/items.html
-
 from datetime import datetime as dt
 import json
 from pathlib import Path
@@ -35,6 +33,7 @@ class Job(scrapy.Item):
     location = scrapy.Field()
     post_age = scrapy.Field()
     post_dt = scrapy.Field()
+    region = scrapy.Field()
     spider = scrapy.Field()
     state = scrapy.Field()
     timestamp = scrapy.Field(input_processor=Identity())
