@@ -1,26 +1,29 @@
 # -*- coding: utf-8 -*-
-from urllib.parse import urljoin
+from urllib.parse import quote
 
 import scrapy
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.loader.processors import Join
 from app.items import Job, JobLoader
-from w3lib.html import remove_tags
+from scrapy.utils.project import get_project_settings
 
+SETTINGS = get_project_settings()
+SPLASH_URL = SETTINGS['SPLASH_URL']
 
 class IndeedSpider(CrawlSpider):
     name = 'indeed'
     allowed_domains = ['indeed.com']
-    start_urls = ['http://indeed.com']
+    start_urls = ['http://indeed.com/jobs?l=Houston,TX']
     rules = (
-            Rule(LinkExtractor(allow=('/jobs')), callback='parse_item', follow=True),
+            Rule(LinkExtractor(allow=(r'/jobs')), callback='parse_item', follow=True),
     )
 
     def parse_item(self, response):
         """Load items with data scraped from response."""
         loader = JobLoader(item=Job(), response=response)
         loader.add_css('id', 'div.result::attr(id)')
+        loader.add_value('image_url', f"http://localhost:8050/render.png?url={quote(response.url)}")
         result_loader = loader.nested_css('div.result')
         result_loader.add_css('company', '.company::text')
         result_loader.add_css('post_age', 'span.date::text')

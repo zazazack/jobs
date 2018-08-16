@@ -13,7 +13,7 @@ class GlassdoorSpider(CrawlSpider):
     allowed_domains = ['glassdoor.com']
     start_urls = ['https://www.glassdoor.com']
     rules = (
-        Rule(LinkExtractor(allow=('/Job')), callback='parse_item', follow=True),
+        Rule(LinkExtractor(allow=('/Job/houston')), callback='parse_item', follow=True),
     )
 
     def parse_item(self, response):
