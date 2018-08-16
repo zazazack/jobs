@@ -71,11 +71,12 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'app.pipelines.AppPipeline': 300,
+    'app.pipelines.DropPipeline': 300,
+    'app.pipelines.JobPipeline': 300,
     # 'app.pipelines.ScreenshotPipeline': 300,  # XXX: this is cool but expensive (space)
     # 'scrapy_jsonschema.JsonSchemaValidatePipeline': 100, # XXX: too strict
     # 'scrapy.pipelines.files.FilesPipeline': 1,  # XXX: not currently downloading any files
-    # 'scrapy.pipelines.images.ImagesPipeline': 1, # XXX: turn this on for ScreenshotPipeline
+    'scrapy.pipelines.images.ImagesPipeline': 1, # XXX: turn this on for ScreenshotPipeline
     'scrapyelasticsearch.scrapyelasticsearch.ElasticSearchPipeline': 500, # XXX: send items to elasticsearch AWESOME!!!
 }
 
@@ -121,7 +122,7 @@ ELASTICSEARCH_UNIQ_KEY = 'url'  # Custom unique key
 # can also accept a list of fields if need a composite key
 # ELASTICSEARCH_UNIQ_KEY = ['url', 'id']
 
-# FEED_FORMAT = 'jsonlines'
-# FEED_URI = "file:///usr/src/data/items/jobs/%(name)s/%(time)s.jl"
-# FILES_STORE = '/usr/src/data/items/files'
-# IMAGES_STORE = '/usr/src/data/items/images'
+FEED_FORMAT = 'jsonlines'
+FEED_URI = "file:///usr/src/data/items/jobs/%(name)s/%(time)s.jl"
+FILES_STORE = '/usr/src/data/items/files'
+IMAGES_STORE = '/usr/src/data/items/images'
